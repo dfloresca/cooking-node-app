@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {measurement, timer, tempConverter} = require('./tools');
+const {toCelsius, toFahrenheit} = require('./tools');
 const fs = require('fs');
 
 app.get('/', (req, res) => {
@@ -11,17 +11,21 @@ app.get('/knives', (req, res) => {
     return res.json({ message: "chef's knife, paring knife and bread knife are the essentials"});
 });
 
-app.get('/temp/:temp/:type', (req, res) => {
+app.get('/temperatures', (req, res) => {
+    return res.json({ message: "The temperature types are Celsius and Fahrenheit"});
+})
+
+app.get('/celsius/:temp', (req, res) => {
     let temp = Number(req.params.temp);
-    let type = req.params.type;
-    let temperature = tempConverter(temp, type);
-    if (type=='celsius' || type == 'c') {
-    return res.json({ fahrenheit: temperature});
-    } else if (type == 'fahrenheit' || type == 'c') {
-        return res.json({ celsius : temperature});
-    }
+    let temperature = toCelsius(temp)
+    return res.json({ Celsius: temperature});
 });
 
+app.get('/fahrenheit/:temp', (req, res) => {
+    let temp = Number(req.params.temp);
+    let temperature = toFahrenheit(temp);
+    return res.json({ Fahrenheit: temperature});
+});
 
 app.get('/read', (req, res) => {
     let element = req.query.recipe;
