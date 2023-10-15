@@ -3,6 +3,24 @@ const app = express();
 const {measurement, timer, tempConverter} = require('./tools');
 const fs = require('fs');
 
+app.get('/', (req, res) => {
+    return res.json({ message: 'Welcome to my Cooking App'});
+});
+
+app.get('/knives', (req, res) => {
+    return res.json({ message: "chef's knife, paring knife and bread knife are the essentials"});
+});
+
+app.get('/temp/:temp/:type', (req, res) => {
+    let temp = Number(req.params.temp);
+    let type = req.params.type;
+    let temperature = tempConverter(temp, type);
+    if (type=='celsius' || type == 'c') {
+    return res.json({ fahrenheit: temperature});
+    } else if (type == 'fahrenheit' || type == 'c') {
+        return res.json({ celsius : temperature});
+    }
+});
 
 
 
