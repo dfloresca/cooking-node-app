@@ -23,6 +23,17 @@ app.get('/temp/:temp/:type', (req, res) => {
 });
 
 
+app.get('/read', (req, res) => {
+    let element = req.query.recipe;
+    fs.readFile(`${element}.txt`, 'utf8', (error, data) => {
+        if(error) {
+            return res.json({ message: 'There is an issue, please try again'});
+        } else {
+            return res.json({ recipe: data});
+        }
+    })
+});
+
 
 //setup PORT number and listen for server
 const PORT = process.env.PORT || 8000;
